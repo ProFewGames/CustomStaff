@@ -1,0 +1,14 @@
+name: CustomStaff
+main: xyz.ufactions.customstaff.CustomStaff
+version: 1.0
+author: ProFewGames
+description: A Fully Customizable Staff Plugin
+api-version: 1.13
+commands:
+  staffchat:
+    description: Chat only permissionables can view
+    alias: [ sc ]
+permissions:
+  customstaff.command.sc:
+    description: StaffChat command.
+    default: op
