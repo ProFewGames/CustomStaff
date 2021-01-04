@@ -52,21 +52,17 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            &lt;!&ndash; Build to test server &ndash;&gt;-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-jar-plugin</artifactId>-->
-<!--                <version>3.2.0</version>-->
-<!--                <configuration>-->
-<!--                    <outputDirectory>-->
-<!--                        &lt;!&ndash;                        C:\Users\rick_\Desktop\New folder\SERVERS\test-server 1.8.8\plugins&ndash;&gt;-->
-<!--                        &lt;!&ndash;                    C:\Users\rick_\Desktop\New folder\SERVERS\test-server 1.9\plugins&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        Z:\SERVERS\test-server 1.12.2\plugins&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        Z:\SERVERS\test-server 1.13.2\plugins&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        Z:\SERVERS\test-server 1.14.4\plugins&ndash;&gt;-->
-<!--                    </outputDirectory>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!-- Build to test server -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <outputDirectory>
+                        Z:\Servers\1.8.8\plugins
+                    </outputDirectory>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

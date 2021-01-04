@@ -7,8 +7,12 @@ api-version: 1.13
 commands:
   staffchat:
     description: Chat only permissionables can view
-    alias: [ sc ]
+    aliases:
+      - sc
 permissions:
   customstaff.command.sc:
     description: StaffChat command.
+    default: op
+  customstaff.notify.sc:
+    description: Notify of new messages in staff chat.
     default: op

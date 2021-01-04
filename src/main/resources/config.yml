@@ -1,0 +1,9 @@
+###########################################################################################
+#                                                                                         #
+#                             CustomStaff                                                 #
+#                                   By: ProFewGames                                       #
+#                                                                                         #
+###########################################################################################
+
+# This is the format that will be followed when a user talks in staff chat.
+staff-chat-format: '&8[&4&lStaffChat&8]&r %chat_format%'

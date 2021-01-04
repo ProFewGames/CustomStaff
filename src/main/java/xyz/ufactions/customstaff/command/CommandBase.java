@@ -9,11 +9,11 @@ import xyz.ufactions.customstaff.CustomStaff;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ICommand implements CommandExecutor, TabCompleter {
+public abstract class CommandBase implements CommandExecutor, TabCompleter {
 
     protected final CustomStaff plugin;
 
-    public ICommand(CustomStaff plugin) {
+    public CommandBase(CustomStaff plugin) {
         this.plugin = plugin;
     }
 

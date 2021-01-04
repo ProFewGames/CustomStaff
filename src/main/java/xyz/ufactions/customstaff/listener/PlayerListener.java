@@ -1,9 +1,14 @@
 package xyz.ufactions.customstaff.listener;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import xyz.ufactions.customstaff.CustomStaff;
+
+import java.util.regex.Matcher;
 
 public class PlayerListener implements Listener {
 
@@ -15,6 +20,18 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        // TODO
+        if (plugin.isInStaffChat(e.getPlayer().getUniqueId())) {
+            e.getRecipients().clear();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.hasPermission("customstaff.sc.notify")) {
+                    e.getRecipients().add(player);
+                }
+            }
+
+            String format = plugin.getConfigurationFile().getStaffChatFormat();
+            format = ChatColor.translateAlternateColorCodes('&', format);
+            format = format.replaceAll("%chat_format%", Matcher.quoteReplacement(e.getFormat()));
+            e.setFormat(format);
+        }
     }
 }
