@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import xyz.ufactions.customstaff.CustomStaff;
+import xyz.ufactions.customstaff.libs.F;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public abstract class CommandBase implements CommandExecutor, TabCompleter {
     protected final boolean checkPermission(CommandSender sender, String permission, boolean notify) {
         if (!sender.hasPermission(permission)) {
             if (notify) {
-                sender.sendMessage("No Perm");
+                sender.sendMessage(F.error("No Permission"));
                 return false;
             }
         }
@@ -44,8 +45,13 @@ public abstract class CommandBase implements CommandExecutor, TabCompleter {
     }
 
     protected final boolean isPlayer(CommandSender sender) {
+        return isPlayer(sender, true);
+    }
+
+    protected final boolean isPlayer(CommandSender sender, boolean notify) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("No Player");
+            if (notify)
+                sender.sendMessage(F.error("No Player"));
             return false;
         }
         return true;

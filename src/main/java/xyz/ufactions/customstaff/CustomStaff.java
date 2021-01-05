@@ -1,20 +1,20 @@
 package xyz.ufactions.customstaff;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.ufactions.customstaff.command.StaffChatCommand;
+import xyz.ufactions.customstaff.command.StaffCommand;
 import xyz.ufactions.customstaff.file.ConfigurationFile;
 import xyz.ufactions.customstaff.listener.PlayerListener;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class CustomStaff extends JavaPlugin {
 
-    // Data
-    private final Set<UUID> staffchat = new HashSet<>(); // TODO : Data Sorting? - Might get messy
-    private String chatFormat;
+    // Data || TODO : Data Sorting? - Might get messy
+    private final Set<UUID> staffchat = new HashSet<>();
+    private final Set<UUID> hiddenstaff = new HashSet<>();
 
     // Configuration Files
     private ConfigurationFile configurationFile;
@@ -23,8 +23,8 @@ public class CustomStaff extends JavaPlugin {
     public void onEnable() {
         this.configurationFile = new ConfigurationFile(this);
 
-        StaffChatCommand command = new StaffChatCommand(this);
-        command.register("staffchat");
+        new StaffChatCommand(this).register("staffchat");
+        new StaffCommand(this).register("staff");
 
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
     }
@@ -53,13 +53,33 @@ public class CustomStaff extends JavaPlugin {
         staffchat.remove(uuid);
     }
 
-    public void setChatFormat(String chatFormat) {
-        this.chatFormat = chatFormat;
+    public void setHiddenStaff(UUID uuid, boolean hidden) {
+        if (Bukkit.getPlayer(uuid) == null) return;
+
+        if (hidden)
+            hiddenstaff.add(uuid);
+        else
+            hiddenstaff.remove(uuid);
     }
 
     // Fetch
 
     public ConfigurationFile getConfigurationFile() {
         return configurationFile;
+    }
+
+    public Set<UUID> getHiddenStaff() {
+        return hiddenstaff;
+    }
+
+    public List<Player> getOnlineStaff(Player player) {
+        List<Player> list = new ArrayList<>();
+        for (Player staff : Bukkit.getOnlinePlayers()) {
+            if (staff.hasPermission("customstaff.visible.staff") && !hiddenstaff.contains(staff.getUniqueId())
+                    && (player != null && player.canSee(staff))) {
+                list.add(staff);
+            }
+        }
+        return list;
     }
 }

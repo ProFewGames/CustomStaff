@@ -5,6 +5,8 @@ author: ProFewGames
 description: A Fully Customizable Staff Plugin
 api-version: 1.13
 commands:
+  staff:
+    description: View all online staff
   staffchat:
     description: Chat only permissionables can view
     aliases:
@@ -15,4 +17,16 @@ permissions:
     default: op
   customstaff.notify.sc:
     description: Notify of new messages in staff chat.
+    default: op
+  customstaff.command.staff:
+    description: Staff command.
+    default: true
+  customstaff.command.staff.show:
+    description: Show from /staff
+    default: op
+  customstaff.command.staff.hide:
+    description: Hide from /staff
+    default: op
+  customstaff.visible.staff:
+    description: Visibly appear as staff
     default: op

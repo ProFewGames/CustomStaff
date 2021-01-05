@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import xyz.ufactions.customstaff.CustomStaff;
 
 import java.util.regex.Matcher;
@@ -20,6 +21,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
+        System.out.println(plugin.getHiddenStaff());
         if (plugin.isInStaffChat(e.getPlayer().getUniqueId())) {
             e.getRecipients().clear();
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -33,5 +35,10 @@ public class PlayerListener implements Listener {
             format = format.replaceAll("%chat_format%", Matcher.quoteReplacement(e.getFormat()));
             e.setFormat(format);
         }
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent e) {
+        plugin.getHiddenStaff().remove(e.getPlayer().getUniqueId());
     }
 }
