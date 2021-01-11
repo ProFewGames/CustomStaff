@@ -59,7 +59,9 @@
                 <version>3.2.0</version>
                 <configuration>
                     <outputDirectory>
-                        Z:\Servers\1.8.8\plugins
+<!--                        Z:\Servers\1.8.8\plugins-->
+                        Z:\Servers\Network\Server A\plugins
+<!--                        Z:\Servers\Network\Server B\plugins-->
                     </outputDirectory>
                 </configuration>
             </plugin>

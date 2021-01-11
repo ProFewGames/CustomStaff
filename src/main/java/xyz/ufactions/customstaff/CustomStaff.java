@@ -3,10 +3,14 @@ package xyz.ufactions.customstaff;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.ufactions.customstaff.command.CustomStaffCommand;
 import xyz.ufactions.customstaff.command.StaffChatCommand;
 import xyz.ufactions.customstaff.command.StaffCommand;
 import xyz.ufactions.customstaff.file.ConfigurationFile;
 import xyz.ufactions.customstaff.listener.PlayerListener;
+import xyz.ufactions.customstaff.network.PluginChannel;
+import xyz.ufactions.customstaff.network.channels.BungeePluginChannel;
+import xyz.ufactions.customstaff.network.data.OnlineStaffData;
 
 import java.util.*;
 
@@ -16,21 +20,32 @@ public class CustomStaff extends JavaPlugin {
     private final Set<UUID> staffchat = new HashSet<>();
     private final Set<UUID> hiddenstaff = new HashSet<>();
 
+    private PluginChannel pluginChannel;
+
     // Configuration Files
     private ConfigurationFile configurationFile;
 
     @Override
     public void onEnable() {
         this.configurationFile = new ConfigurationFile(this);
+        this.pluginChannel = new BungeePluginChannel(this);
+
+        pluginChannel.register();
+        pluginChannel.sendData(new OnlineStaffData(this));
 
         new StaffChatCommand(this).register("staffchat");
         new StaffCommand(this).register("staff");
+        new CustomStaffCommand(this).register("customstaff");
 
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
     }
 
     public void reload() {
         this.configurationFile.reload();
+    }
+
+    public void debug(String message) {
+        getLogger().info(message);
     }
 
     public void sendToStaffChat(Player player, String message) {
@@ -70,6 +85,10 @@ public class CustomStaff extends JavaPlugin {
 
     public Set<UUID> getHiddenStaff() {
         return hiddenstaff;
+    }
+
+    public PluginChannel getPluginChannel() {
+        return pluginChannel;
     }
 
     public List<Player> getOnlineStaff(Player player) {
