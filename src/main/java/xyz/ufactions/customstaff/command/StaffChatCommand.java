@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.ufactions.customstaff.CustomStaff;
+import xyz.ufactions.customstaff.file.LanguageFile;
 import xyz.ufactions.customstaff.libs.F;
 
 import java.util.Collections;
@@ -25,10 +26,10 @@ public class StaffChatCommand extends CommandBase {
             if (args[0].equalsIgnoreCase("toggle")) {
                 if (plugin.isInStaffChat(player.getUniqueId())) {
                     plugin.disableStaffChat(player.getUniqueId());
-                    player.sendMessage("Disabled staff chat");
+                    player.sendMessage(F.color(plugin.getLanguageFile().get(LanguageFile.LanguagePath.STAFFCHAT_DISABLED)));
                 } else {
                     plugin.enableStaffChat(player.getUniqueId());
-                    player.sendMessage("Enabled staff chat");
+                    player.sendMessage(F.color(plugin.getLanguageFile().get(LanguageFile.LanguagePath.STAFFCHAT_ENABLED)));
                 }
                 return true;
             }

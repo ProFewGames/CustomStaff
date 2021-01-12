@@ -10,7 +10,7 @@ import xyz.ufactions.customstaff.CustomStaff;
 import xyz.ufactions.customstaff.libs.UtilMath;
 import xyz.ufactions.customstaff.network.PluginChannel;
 import xyz.ufactions.customstaff.network.PluginChannelData;
-import xyz.ufactions.customstaff.network.Utility;
+import xyz.ufactions.customstaff.network.handlers.OnlineStaffHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -28,11 +28,13 @@ public class BungeePluginChannel extends PluginChannel implements PluginMessageL
     public void register() {
         plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
         plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", this);
+
+        registerData(OnlineStaffHandler.OnlineStaffData.class);
     }
 
     @Override
     public void sendData(PluginChannelData data, UUID address) {
-        plugin.debug("Sending to : " + address.toString() + " | data : " + data);
+        plugin.debug("Sending to : " + (address != null ? address.toString() : "n/a") + " | data : " + data);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Forward");
         out.writeUTF("ALL");
@@ -44,7 +46,9 @@ public class BungeePluginChannel extends PluginChannel implements PluginMessageL
         ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
         DataOutputStream msgout = new DataOutputStream(msgbytes);
         try {
-            msgout.writeUTF(Utility.serialize(data));
+            String content = cookData(data);
+            msgout.writeUTF(content);
+            plugin.getLogger().info("Written Contents = \"" + content + "\"");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,6 +71,6 @@ public class BungeePluginChannel extends PluginChannel implements PluginMessageL
         plugin.debug("Incoming Data");
 
         String data = in.readUTF();
-        receivedData(data);
+        receivedData(data.substring(2)); // Substring 2? It adds characters when receiving messages idk why
     }
 }

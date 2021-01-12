@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import xyz.ufactions.customstaff.CustomStaff;
+import xyz.ufactions.customstaff.file.LanguageFile;
 import xyz.ufactions.customstaff.libs.F;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public abstract class CommandBase implements CommandExecutor, TabCompleter {
     protected final boolean checkPermission(CommandSender sender, String permission, boolean notify) {
         if (!sender.hasPermission(permission)) {
             if (notify) {
-                sender.sendMessage(F.error("No Permission"));
+                sender.sendMessage(F.color(plugin.getLanguageFile().get(LanguageFile.LanguagePath.NOPERM)));
                 return false;
             }
         }
@@ -51,7 +52,7 @@ public abstract class CommandBase implements CommandExecutor, TabCompleter {
     protected final boolean isPlayer(CommandSender sender, boolean notify) {
         if (!(sender instanceof Player)) {
             if (notify)
-                sender.sendMessage(F.error("No Player"));
+                sender.sendMessage(F.color(plugin.getLanguageFile().get(LanguageFile.LanguagePath.NOPLAYER)));
             return false;
         }
         return true;

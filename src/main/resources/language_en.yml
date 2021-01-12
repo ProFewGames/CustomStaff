@@ -1,0 +1,19 @@
+###########################################################################################
+#                                                                                         #
+#                                Language                                                 #
+#                                   English                                               #
+#                                                                                         #
+###########################################################################################
+
+# Errors
+no-permission: '&4You do not have access to this command.'
+no-player: '&4You must be an in-game player to execute this command.'
+no-staff: '&4There are no staff online.'
+
+# Messages
+stafflist-hidden: '&cYou have been hidden from the staff list.'
+stafflist-visible: '&aYou now appear on the staff list.'
+stafflist-header: '&aOnline Staff:'                                 #Leave blank for nothing
+stafflist-repeatable: '&c➥ &7{player}'
+staffchat-disabled: '&cYou have disabled staffchat'
+staffchat-enabled: '&cYou have enabled staffchat'

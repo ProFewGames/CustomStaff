@@ -1,0 +1,17 @@
+###########################################################################################
+#                                                                                         #
+#                                Idioma                                                   #
+#                                   Español                                               #
+#                                                                                         #
+###########################################################################################
+
+# Errors
+no-permission: '&4You do not have access to this command.'
+no-player: '&4You must be an in-game player to execute this command.'
+no-staff: '&4There are no staff online.'
+
+# Messages
+hidden-from-staff: '&cYou have been hidden from the staff list.'
+visible-on-staff: '&aYou now appear on the staff list.'
+staffchat-disabled: '&cYou have disabled staffchat'
+staffchat-enabled: '&cYou have enabled staffchat'

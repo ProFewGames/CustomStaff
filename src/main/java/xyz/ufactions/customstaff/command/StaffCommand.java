@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.ufactions.customstaff.CustomStaff;
+import xyz.ufactions.customstaff.file.LanguageFile;
 import xyz.ufactions.customstaff.libs.F;
 
 import java.util.ArrayList;
@@ -25,13 +26,13 @@ public class StaffCommand extends CommandBase {
                 if (args[0].equalsIgnoreCase("hide")) {
                     if (player.hasPermission("customstaff.command.staff.hide")) {
                         plugin.setHiddenStaff(player.getUniqueId(), true);
-                        player.sendMessage(F.error("You have been hidden from the staff list."));
+                        player.sendMessage(F.color(plugin.getLanguageFile().get(LanguageFile.LanguagePath.STAFFLIST_HIDDEN)));
                         return true;
                     }
                 } else if (args[0].equalsIgnoreCase("show")) {
                     if (player.hasPermission("customstaff.command.staff.show")) {
                         plugin.setHiddenStaff(player.getUniqueId(), false);
-                        player.sendMessage(F.format("You are now visible on the staff list."));
+                        player.sendMessage(F.color(plugin.getLanguageFile().get(LanguageFile.LanguagePath.STAFFLIST_VISIBLE)));
                         return true;
                     }
                 }
@@ -40,11 +41,13 @@ public class StaffCommand extends CommandBase {
 
         List<Player> staff = plugin.getOnlineStaff(isPlayer(sender) ? (Player) sender : null);
         if (staff.isEmpty()) {
-            sender.sendMessage(F.error("There are no staff online."));
+            sender.sendMessage(F.color(plugin.getLanguageFile().get(LanguageFile.LanguagePath.NOSTAFF)));
         } else {
-            sender.sendMessage(F.format("Online Staff:"));
+            String header = plugin.getLanguageFile().get(LanguageFile.LanguagePath.STAFFLIST_HEADER);
+            if (!header.isEmpty()) sender.sendMessage(F.color(header));
+            String repeatable = plugin.getLanguageFile().get(LanguageFile.LanguagePath.STAFFLIST_REPEATABLE);
             for (Player player : staff) {
-                sender.sendMessage(F.list(player.getName()));
+                sender.sendMessage(F.color(repeatable.replaceAll("\\{player}", player.getName())));
             }
         }
         return false;

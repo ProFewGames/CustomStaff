@@ -7,10 +7,11 @@ import xyz.ufactions.customstaff.command.CustomStaffCommand;
 import xyz.ufactions.customstaff.command.StaffChatCommand;
 import xyz.ufactions.customstaff.command.StaffCommand;
 import xyz.ufactions.customstaff.file.ConfigurationFile;
+import xyz.ufactions.customstaff.file.LanguageFile;
 import xyz.ufactions.customstaff.listener.PlayerListener;
 import xyz.ufactions.customstaff.network.PluginChannel;
 import xyz.ufactions.customstaff.network.channels.BungeePluginChannel;
-import xyz.ufactions.customstaff.network.data.OnlineStaffData;
+import xyz.ufactions.customstaff.network.handlers.OnlineStaffHandler;
 
 import java.util.*;
 
@@ -24,14 +25,16 @@ public class CustomStaff extends JavaPlugin {
 
     // Configuration Files
     private ConfigurationFile configurationFile;
+    private LanguageFile languageFile;
 
     @Override
     public void onEnable() {
+        this.languageFile = new LanguageFile(this, LanguageFile.Language.ENGLISH);
         this.configurationFile = new ConfigurationFile(this);
         this.pluginChannel = new BungeePluginChannel(this);
 
         pluginChannel.register();
-        pluginChannel.sendData(new OnlineStaffData(this));
+        pluginChannel.sendData(new OnlineStaffHandler.OnlineStaffData());
 
         new StaffChatCommand(this).register("staffchat");
         new StaffCommand(this).register("staff");
@@ -81,6 +84,10 @@ public class CustomStaff extends JavaPlugin {
 
     public ConfigurationFile getConfigurationFile() {
         return configurationFile;
+    }
+
+    public LanguageFile getLanguageFile() {
+        return languageFile;
     }
 
     public Set<UUID> getHiddenStaff() {
