@@ -21,7 +21,6 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        System.out.println(plugin.getHiddenStaff());
         if (plugin.isInStaffChat(e.getPlayer().getUniqueId())) {
             e.getRecipients().clear();
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -30,7 +29,7 @@ public class PlayerListener implements Listener {
                 }
             }
 
-            String format = plugin.getConfigurationFile().getStaffChatFormat();
+            String format = plugin.getConfigurationFile().getString("staff-chat-format");
             format = ChatColor.translateAlternateColorCodes('&', format);
             format = format.replaceAll("%chat_format%", Matcher.quoteReplacement(e.getFormat()));
             e.setFormat(format);

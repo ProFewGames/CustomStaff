@@ -61,5 +61,6 @@ public abstract class CommandBase implements CommandExecutor, TabCompleter {
     public final void register(String name) {
         plugin.getCommand(name).setExecutor(this);
         plugin.getCommand(name).setTabCompleter(this);
+        plugin.debug("Registered command. '" + name + "'");
     }
 }

@@ -34,7 +34,7 @@ public class BungeePluginChannel extends PluginChannel implements PluginMessageL
 
     @Override
     public void sendData(PluginChannelData data, UUID address) {
-        plugin.debug("Sending to : " + (address != null ? address.toString() : "n/a") + " | data : " + data);
+        plugin.debug("Transmitting to : " + (address != null ? address.toString() : "n/a") + " | data : " + data);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Forward");
         out.writeUTF("ALL");
@@ -71,6 +71,6 @@ public class BungeePluginChannel extends PluginChannel implements PluginMessageL
         plugin.debug("Incoming Data");
 
         String data = in.readUTF();
-        receivedData(data.substring(2)); // Substring 2? It adds characters when receiving messages idk why
+        processData(data.substring(2)); // Substring 2? It adds characters when receiving messages idk why
     }
 }

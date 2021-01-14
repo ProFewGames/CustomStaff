@@ -2,6 +2,7 @@ package xyz.ufactions.customstaff;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.ufactions.customstaff.command.CustomStaffCommand;
 import xyz.ufactions.customstaff.command.StaffChatCommand;
@@ -10,9 +11,9 @@ import xyz.ufactions.customstaff.file.ConfigurationFile;
 import xyz.ufactions.customstaff.file.LanguageFile;
 import xyz.ufactions.customstaff.listener.PlayerListener;
 import xyz.ufactions.customstaff.network.PluginChannel;
-import xyz.ufactions.customstaff.network.channels.BungeePluginChannel;
-import xyz.ufactions.customstaff.network.handlers.OnlineStaffHandler;
+import xyz.ufactions.customstaff.network.channels.PluginChannelType;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class CustomStaff extends JavaPlugin {
@@ -22,6 +23,7 @@ public class CustomStaff extends JavaPlugin {
     private final Set<UUID> hiddenstaff = new HashSet<>();
 
     private PluginChannel pluginChannel;
+    private boolean debugging;
 
     // Configuration Files
     private ConfigurationFile configurationFile;
@@ -31,10 +33,26 @@ public class CustomStaff extends JavaPlugin {
     public void onEnable() {
         this.languageFile = new LanguageFile(this, LanguageFile.Language.ENGLISH);
         this.configurationFile = new ConfigurationFile(this);
-        this.pluginChannel = new BungeePluginChannel(this);
 
-        pluginChannel.register();
-        pluginChannel.sendData(new OnlineStaffHandler.OnlineStaffData());
+        this.debugging = this.configurationFile.getBoolean("debugging");
+
+        PluginChannelType pluginChannelType;
+        try {
+            pluginChannelType = PluginChannelType.valueOf(this.configurationFile.getString("messaging-channel"));
+        } catch (EnumConstantNotPresentException e) {
+            getLogger().warning("Failed to fetch messaging-channel provided in the config.");
+            pluginChannelType = PluginChannelType.EMPTY;
+        }
+
+        try {
+            this.pluginChannel = pluginChannelType.getPluginChannelClass()
+                    .getConstructor(CustomStaff.class).newInstance(this);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            getLogger().warning("Failed to instantiate the plugin channel class.");
+            e.printStackTrace();
+        }
+
+        if (this.pluginChannel != null) this.pluginChannel.register();
 
         new StaffChatCommand(this).register("staffchat");
         new StaffCommand(this).register("staff");
@@ -43,12 +61,20 @@ public class CustomStaff extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
     }
 
-    public void reload() {
-        this.configurationFile.reload();
+    @Override
+    public void onDisable() {
+        try {
+            this.pluginChannel.unregister();
+        } catch (Exception e) {
+            getLogger().info("Failed to unregister plugin channel. This might cause duplicate data," +
+                    " a restart is recommended if this is a reload.");
+            e.printStackTrace();
+        }
     }
 
     public void debug(String message) {
-        getLogger().info(message);
+        if (debugging)
+            getLogger().info(message);
     }
 
     public void sendToStaffChat(Player player, String message) {
@@ -81,6 +107,10 @@ public class CustomStaff extends JavaPlugin {
     }
 
     // Fetch
+
+    public boolean debugging() {
+        return debugging;
+    }
 
     public ConfigurationFile getConfigurationFile() {
         return configurationFile;

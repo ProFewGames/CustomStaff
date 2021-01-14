@@ -24,6 +24,14 @@
             <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Jedis Dependency -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -59,9 +67,9 @@
                 <version>3.2.0</version>
                 <configuration>
                     <outputDirectory>
-<!--                        Z:\Servers\1.8.8\plugins-->
+                        <!--                        Z:\Servers\1.8.8\plugins-->
                         Z:\Servers\Network\Server A\plugins
-<!--                        Z:\Servers\Network\Server B\plugins-->
+                        <!--                        Z:\Servers\Network\Server B\plugins-->
                     </outputDirectory>
                 </configuration>
             </plugin>

@@ -7,3 +7,23 @@
 
 # This is the format that will be followed when a user talks in staff chat.
 staff-chat-format: '&8[&4&lStaffChat&8]&r %chat_format%'
+
+# This is the channel type that the plugin will use to message each-other
+# Available Types:
+# BUNGEE - Uses vanilla BungeeCord and Spigot messaging channels. (This requires a player to be
+#   online in each server for this to work)
+# MySQL - Uses MySQL data fetching and saving. (This is very resource intense and is not
+#   recommended for medium to large servers)
+# Redis - Uses Redis' subscription to transfer data. (recommended | Real-time (near) data transfer)
+messaging-channel: BUNGEE
+
+# Will debugging be enabled? Please enable this option and restart the server before submitting
+# tickets via Discord.
+debugging: false
+
+# This information is not required by default. Only if the messaging-channel is set to
+# 'Redis' above.
+Redis:
+  host: localhost
+  port: 6379
+  password: Walrus

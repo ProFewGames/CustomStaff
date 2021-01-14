@@ -5,7 +5,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class LanguageFile extends FileHandler {
 
     public enum Language {
-        ENGLISH("language_en");
+        ENGLISH("language_en.yml"),
+        SPANISH("language_es.yml");
 
         private final String resourcePath;
 
@@ -34,7 +35,7 @@ public class LanguageFile extends FileHandler {
     }
 
     public LanguageFile(JavaPlugin plugin, Language language) {
-        super(plugin, language.resourcePath, plugin.getDataFolder(), "language.yml");
+        super(plugin, language.resourcePath, "language.yml");
     }
 
     public String get(LanguagePath path) {

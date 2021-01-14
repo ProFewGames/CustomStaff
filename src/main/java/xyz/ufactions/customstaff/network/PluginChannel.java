@@ -19,8 +19,12 @@ public abstract class PluginChannel {
 
     public abstract void register();
 
+    public void unregister() {
+    }
+
     protected final void registerData(Class<? extends PluginChannelData> pluginChannelDataClazz) {
         dataMap.put(pluginChannelDataClazz.getSimpleName(), pluginChannelDataClazz);
+        plugin.debug("Registered data handler. " + pluginChannelDataClazz.getSimpleName());
     }
 
     public final void sendData(PluginChannelData data) {
@@ -33,8 +37,8 @@ public abstract class PluginChannel {
         return data.getClass().getSimpleName() + ":" + Utility.serialize(data);
     }
 
-    protected final void receivedData(String data) {
-        plugin.debug("Decoding data : \"" + data + "\"");
+    protected final void processData(String data) {
+        plugin.debug("Processing data : \"" + data + "\"");
         // Uncook the data... name convention :) "uncook" - Start JynxDEV
         String[] array = data.split(":");
         Class<? extends PluginChannelData> clazz = dataMap.get(array[0]);
@@ -55,7 +59,7 @@ public abstract class PluginChannel {
     }
 
     public final void registerListener(PluginChannelListener listener) {
-        plugin.debug("Registering listener : " + listener);
         listeners.add(listener);
+        plugin.debug("Registered listener : " + listener);
     }
 }
